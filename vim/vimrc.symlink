@@ -13,7 +13,6 @@ set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
 
 " Interface
-set guifont=DejaVu_Sans_Mono:h12
 set hidden
 set hlsearch
 set nowrap
@@ -21,6 +20,8 @@ set ruler
 set wildmenu
 set wildmode=longest:full,full
 set showtabline=2
+set number 
+
 
 " vim-move
 let g:move_key_modifier = 'C'
@@ -37,21 +38,11 @@ inoremap <C-k> <ESC>:m .-2<CR>==gi
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
-
-
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
-
-
-let g:airline#extensions#whitespace#enabled = 1
-
+let g:Powerline_symbols = 'fancy'
 " Color scheme
 set background=dark
 syntax enable
-colorscheme sunburst
+colorscheme molokai
 if has('gui_macvim')
 	set transparency=10
 endif
@@ -78,12 +69,14 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
+Plugin 'powerline/powerline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'matze/vim-move'
+Plugin 'jlanzarotta/bufexplorer'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
