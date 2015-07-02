@@ -4,6 +4,23 @@ export ZSH=$HOME/.dotfiles
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Code
 
+# Created by newuser for 5.0.2
+
+source ~/antigen.zsh
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle git
+antigen bundle pip
+antigen bundle kennethreitz/autoenv
+antigen use oh-my-zsh
+antigen theme robbyrussell
+
+antigen apply
+
+export EDITOR='vim'
+export NOSE_NOLOGCAPTURE=true
+export ZOOKEEPER_PATH=/usr/share/java
+
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
 # you'll have access to them in your scripts.
