@@ -1,59 +1,6 @@
-syntax on
+" from powerline.ext.vim import source_plugin; source_plugin()
 
-" Wrap gitcommit file types at the appropriate length
-filetype indent plugin on
-
-
-set nocompatible
-
-" Text editing
-set backspace=indent,eol,start
-set cino=:0 " No indent for case:/default:
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-
-
-" Interface
-set hidden
-set hlsearch
-set nowrap
-set ruler
-set wildmenu
-set wildmode=longest:full,full
-set showtabline=2
-set number 
-
-
-" vim-move
-let g:move_key_modifier = 'C'
-" Normal mode
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-nnoremap <NL> i<CR><ESC>
-
-" Insert mode
-inoremap <C-j> <ESC>:m .+1<CR>==gi
-inoremap <C-k> <ESC>:m .-2<CR>==gi
-
-" Visual mode
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
-
-let g:Powerline_symbols = 'fancy'
-" Color scheme
-set background=dark
-syntax enable
-colorscheme molokai
-if has('gui_macvim')
-	set transparency=10
-endif
-
-" Commands that shell out tend to assume a bourne shell
-set shell=sh
-
-
-let g:nerdtree_tabs_open_on_console_startup=1
-
-" Vundle related
+set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -62,6 +9,8 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
+Bundle 'ervandew/supertab'
+
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
@@ -69,26 +18,192 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-"Plugin 'bling/vim-airline'
-Plugin 'powerline/powerline'
-Plugin 'scrooloose/nerdtree'
+" plugin from http://vim-scripts.org/vim/scripts.html
+Plugin 'L9'
+" Git plugin not hosted on GitHub
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+Plugin 'Puppet-Syntax-Highlighting'
+
+" Tabs
+Bundle 'kien/tabman.vim'
+
+" Directory Tree
+Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
+
+" Puppet
+Bundle 'rodjek/vim-puppet'
+
+" Python Plugins
+Bundle 'klen/python-mode'
+Bundle 'davidhalter/jedi-vim'
+
+" Python and other languages code checker
+Bundle 'scrooloose/syntastic'
+
+" Coffeescript
+Bundle 'kchmck/vim-coffee-script'
+
+" Snipmate
+Bundle 'tomtom/tlib_vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+"Bundle 'garbas/vim-snipmate'
+
+Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'matze/vim-move'
-Plugin 'jlanzarotta/bufexplorer'
+
+" Snippets are separated from the engine. Add this if you want them:
+" Plugin 'honza/vim-snippets'
+"
+
+" Powerline
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+" Ack
+Bundle 'mileszs/ack.vim'
+
+Plugin 'kien/ctrlp.vim'
+
+" Ruby
+Plugin 'vim-ruby/vim-ruby'
+
+" Vertical lines to show indentation
+Bundle 'Yggdroot/indentLine'
+
+" Markdown
+Plugin 'tpope/vim-markdown'
+
+Plugin 'jeetsukumaran/vim-buffergator'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+
+set nu
+set expandtab                   "use spaces instead of tabs
+set statusline=2
+set noshowmode
+set tabstop=4                   "insert 4 spaces whenever the tab key is pressed
+set showtabline=2
+set shiftwidth=4                "set indentation to 4 spaces
+
+set hlsearch                    "highlight search terms
+
+set ic                          "Ignore Case during searches
+
+set nobackup                    " do not keep backup files, it's 70's style cluttering
+
+set noswapfile
+
+set timeoutlen=1000 ttimeoutlen=0
+
+augroup vimrc_autocmds
+autocmd!
+ autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+ autocmd FileType python match Excess /\%119v.*/
+ autocmd FileType python set nowrap
+augroup END
+
+
+" " Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<leader>s"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+synta  enable
+colorscheme molokai
+set background=dark
+let g:Powerline_symbols = 'unicode'
+set laststatus=2
+set encoding=utf-8
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+set rnu
+
+let g:syntastic_aggregate_errors = 1
+
+" Python Mode Setup
+let g:pymode_options_max_line_length = 119
+let g:pymode_trim_whitespaces = 1
+let g:pymode_folding = 0
+let g:pymode_lint_on_write = 0
+let g:pymode_lint_signs = 0
+" Stop doc string popup
+autocmd FileType python setlocal completeopt-=preview
+
+" Nerd Tree - Always show
+" let g:nerdtree_tabs_open_on_console_startup=1
+" Don't show pycs
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+
+" Tab
+" Map ctrl shift to move
+map <C-S-Right> :tabn<CR>
+imap <C-S-Right> <ESC>:tabn<CR>
+map <C-S-Left> :tabp<CR>
+imap <C-S-Left> <ESC>:tabp<CR>
+
+nnoremap <silent> <C-Right> <c-w>l
+nnoremap <silent> <C-Left> <c-w>h
+nnoremap <silent> <C-Up> <c-w>k
+nnoremap <silent> <C-Down> <c-w>j
+
+nnoremap π :CtrlPBufTag<CR>
+
+" Easier Buffer Nav - Option + [ ]
+nmap ‘ :bn<CR>
+nmap “ :bp<CR>
+
+
+nmap <silent> [1;3A :wincmd k<CR>
+nmap <silent> [1;3B :wincmd j<CR>
+nmap <silent> [1;3D :wincmd h<CR>
+nmap <silent> [1;3C :wincmd l<CR>
+nmap <silent> <C-x> :bw<CR>
+map <C-s> :w<CR>
+
+
+"" Buffer Navigation
+" Toggle left sidebar: NERDTree and BufferGator
+fu! UiToggle()
+  let b = bufnr("%")
+  execute "NERDTreeToggle | BuffergatorToggle"
+  execute ( bufwinnr(b) . "wincmd w" )
+  execute ":set number!"
+endf
+map  <silent> <Leader>w  <esc>:call UiToggle()<cr>
+
+
+
+" Delete trailing whitespace on puppet files
+" Delete trailing whitespace on puppet files
+autocmd BufWritePre * :%s/\s\+$//e
+
+set backspace=indent,eol,start
+
+" GitGutter (http://vimawesome.com/plugin/vim-gitgutter)
+Plugin 'airblade/vim-gitgutter'
+" Do not show Git gutter when there are more than 500 changes
+let g:gitgutter_max_signs = 500  " default value
+
+" Remove highlighting post search
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+" If opening files on the command using split, this ensures they open to the
+" right of nerdtree, otherwise you end being angry
+set splitright
+
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype sh setlocal ts=2 sts=2 sw=2
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd Filetype scss setlocal ts=2 sts=2 sw=2
+
+Plugin 'craigemery/vim-autotag'
+
+" Python
+" Ignore long lines
+let g:syntastic_python_flake8_post_args='--ignore=E501'
+
