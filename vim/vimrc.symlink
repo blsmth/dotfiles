@@ -57,23 +57,9 @@ Plugin 'Valloric/YouCompleteMe'
 " Snippets are separated from the engine. Add this if you want them:
 " Plugin 'honza/vim-snippets'
 "
-
 " Powerline
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
-" Ack
-Bundle 'mileszs/ack.vim'
-
-Plugin 'kien/ctrlp.vim'
-
-" Ruby
-Plugin 'vim-ruby/vim-ruby'
-
-" Vertical lines to show indentation
-Bundle 'Yggdroot/indentLine'
-
-" Markdown
-Plugin 'tpope/vim-markdown'
 
 Plugin 'jeetsukumaran/vim-buffergator'
 
@@ -86,7 +72,7 @@ set expandtab                   "use spaces instead of tabs
 set statusline=2
 set noshowmode
 set tabstop=4                   "insert 4 spaces whenever the tab key is pressed
-set showtabline=2
+
 set shiftwidth=4                "set indentation to 4 spaces
 
 set hlsearch                    "highlight search terms
@@ -113,7 +99,8 @@ let g:UltiSnipsExpandTrigger="<leader>s"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-synta  enable
+syntax enable
+
 colorscheme molokai
 set background=dark
 let g:Powerline_symbols = 'unicode'
@@ -146,11 +133,6 @@ imap <C-S-Right> <ESC>:tabn<CR>
 map <C-S-Left> :tabp<CR>
 imap <C-S-Left> <ESC>:tabp<CR>
 
-nnoremap <silent> <C-Right> <c-w>l
-nnoremap <silent> <C-Left> <c-w>h
-nnoremap <silent> <C-Up> <c-w>k
-nnoremap <silent> <C-Down> <c-w>j
-
 nnoremap π :CtrlPBufTag<CR>
 
 " Easier Buffer Nav - Option + [ ]
@@ -178,7 +160,6 @@ map  <silent> <Leader>w  <esc>:call UiToggle()<cr>
 
 
 
-" Delete trailing whitespace on puppet files
 " Delete trailing whitespace on puppet files
 autocmd BufWritePre * :%s/\s\+$//e
 
