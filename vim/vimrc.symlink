@@ -20,6 +20,8 @@ Plugin 'gmarik/Vundle.vim'
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
+
+Plugin 'kien/ctrlp.vim'
 Plugin 'L9'
 " Git plugin not hosted on GitHub
 Plugin 'git://git.wincent.com/command-t.git'
@@ -59,7 +61,6 @@ Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 " Ack
 Bundle 'mileszs/ack.vim'
 
-Plugin 'kien/ctrlp.vim'
 
 " Ruby
 Plugin 'vim-ruby/vim-ruby'
@@ -78,7 +79,7 @@ set nu
 set expandtab                   "use spaces instead of tabs
 set statusline=2
 set tabstop=4                   "insert 4 spaces whenever the tab key is pressed
-
+set showtabline=2
 set shiftwidth=4                "set indentation to 4 spaces
 
 set hlsearch                    "highlight search terms
@@ -92,11 +93,11 @@ set noswapfile
 set timeoutlen=1000 ttimeoutlen=0
 
 augroup vimrc_autocmds
-        autocmd!
-            autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
-                autocmd FileType python match Excess /\%119v.*/
-                    autocmd FileType python set nowrap
-                augroup END
+autocmd!
+    autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+    autocmd FileType python match Excess /\%119v.*/
+    autocmd FileType python set nowrap
+augroup END
 
 
 syntax enable
