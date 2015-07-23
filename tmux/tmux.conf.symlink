@@ -8,21 +8,29 @@
 #
 #############################
 #
-# COPY AND PASTE
-# http://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
 #
+#
+############################################################################
+# Copy + Paste
+############################################################################
+# Copy-paste integration
+set-option -g default-command "reattach-to-user-namespace -l zsh"
+
 # Use vim keybindings in copy mode
 setw -g mode-keys vi
 
 # Setup 'v' to begin selection as in Vim
 bind-key -t vi-copy v begin-selection
-bind-key -t vi-copy y copy-pipe 'xclip -in -selection clipboard'
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
 # Update default binding of `Enter` to also use copy-pipe
 unbind -t vi-copy Enter
-bind-key -t vi-copy Enter copy-pipe 'xclip -in -selection clipboard'
-#
-############################################################################
+bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+
+# Bind ']' to use pbpaste
+bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"
+
+
 ############################################################################
 # Reset Prefix
 ############################################################################
@@ -38,7 +46,7 @@ set-option -g default-shell /bin/zsh
 set-option -g history-limit 10000
 
 # colors
-setw -g mode-bg black
+setw -g mode-bg blue
 set-option -g default-terminal "xterm-256color" #"xterm-256color" # "screen-256color"
 set-option -g pane-active-border-fg green
 
@@ -54,7 +62,7 @@ set-window-option -g window-status-current-fg white
 setw -g window-status-current-attr reverse
 
 # Automatically set window title
-setw -g automatic-rename
+#setw -g automatic-rename
 
 # use mouse # More on mouse support http://floriancrouzat.net/2010/07/run-tmux-with-mouse-support-in-mac-os-x-terminal-app/
 # setw -g mode-mouse on
@@ -112,11 +120,11 @@ bind-key Enter break-pane
 #bind-key j command-prompt "joinp -t:0"
 bind-key Space command-prompt "joinp -t:%%" # %% = prompt for window.pane [-V|H] # vert|hor split
 
-#previous pane
+#previous window
 bind-key -n C-up prev
 bind-key -n C-left prev
 
-#next pane
+#next window
 bind-key -n C-right next
 bind-key -n C-down next
 
@@ -124,9 +132,6 @@ bind-key -n C-down next
 # windows
 ############################################################################
 set-window-option -g window-status-current-bg red
-bind C-j previous-window
-bind C-k next-window
-bind-key C-a last-window # C-a C-a for last active window
 bind A command-prompt "rename-window %%"
 # By default, all windows in a session are constrained to the size of the
 # smallest client connected to that session,
@@ -139,18 +144,29 @@ setw -g aggressive-resize on
 ############################################################################
 # panes
 ############################################################################
-# Navigation ---------------------------------------------------------------
-# use the vim motion keys to move between panes
-bind-key h select-pane -L
-bind-key j select-pane -D
-bind-key k select-pane -U
-bind-key l select-pane -R
+#nmap <silent> [1;3A :wincmd k<CR>
+#nmap <silent> :wincmd j<CR>
+#nmap <silent>:wincmd h<CR>
+#nmap <silent> [1;3C :wincmd l<CR>
 
-# Resizing ---------------------------------------------------------------
-bind-key C-h resize-pane -L
-bind-key C-j resize-pane -D
-bind-key C-k resize-pane -U
-bind-key C-l resize-pane -R
+# smart pane switching with awareness of vim splits
+bind -n M-left  run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+bind -n M-down run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+bind -n M-up run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+bind -n M-right run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+bind -n M-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
+bind -n M-x confirm-before -p "kill-pane #P? (y/n)" kill-pane
+
+
+# quick pane resizing with vim awareness
+bind-key -n M-S-left run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':vertical resize -5' Enter) || tmux resize-pane -L 5"
+bind-key -n M-S-down run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-w +5) || tmux resize-pane -D 5"
+bind-key -n M-S-up run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-w -5) || tmux resize-pane -U 5"
+bind-key -n M-S-right run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':vertical resize +5' Enter) || tmux resize-pane -R 5"
+
+bind-key -n C-left run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':tabp' Enter) || tmux prev"
+bind-key -n C-right run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':tabn' Enter) || tmux next"
+
 
 # use vim motion keys while in copy mode
 setw -g mode-keys vi

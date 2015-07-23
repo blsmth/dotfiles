@@ -1,6 +1,5 @@
-
 " from powerline.ext.vim import source_plugin; source_plugin()
-
+set clipboard=unnamed
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -29,6 +28,8 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Plugin 'Puppet-Syntax-Highlighting'
 
+Plugin 'christoomey/vim-tmux-navigator'
+
 " Tabs
 Bundle 'kien/tabman.vim'
 
@@ -38,6 +39,8 @@ Bundle 'jistr/vim-nerdtree-tabs'
 
 " Puppet
 Bundle 'rodjek/vim-puppet'
+
+Plugin 'vitapluvia/vim-gurl'
 
 " Python Plugins
 Bundle 'klen/python-mode'
@@ -53,23 +56,17 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 "Bundle 'garbas/vim-snipmate'
-Bundle 'ervandew/snipmate.vim'
 
+Plugin 'SirVer/ultisnips'
+Plugin 'Valloric/YouCompleteMe'
+
+" Snippets are separated from the engine. Add this if you want them:
+" Plugin 'honza/vim-snippets'
+"
 " Powerline
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
-" Ack
-Bundle 'mileszs/ack.vim'
-
-
-" Ruby
-Plugin 'vim-ruby/vim-ruby'
-
-" Vertical lines to show indentation
-Bundle 'Yggdroot/indentLine'
-
-" Markdown
-Plugin 'tpope/vim-markdown'
+Plugin 'jeetsukumaran/vim-buffergator'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -78,6 +75,7 @@ filetype plugin indent on    " required
 set nu
 set expandtab                   "use spaces instead of tabs
 set statusline=2
+set noshowmode
 set tabstop=4                   "insert 4 spaces whenever the tab key is pressed
 set showtabline=2
 set shiftwidth=4                "set indentation to 4 spaces
@@ -97,10 +95,19 @@ autocmd!
     autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
     autocmd FileType python match Excess /\%119v.*/
     autocmd FileType python set nowrap
+    autocmd FileType php set tabstop=2
+    autocmd FileType php set shiftwidth=2
 augroup END
 
 
+" " Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<leader><tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 syntax enable
+
 colorscheme molokai
 set background=dark
 let g:Powerline_symbols = 'unicode'
@@ -133,6 +140,28 @@ imap <C-S-Right> <ESC>:tabn<CR>
 map <C-S-Left> :tabp<CR>
 imap <C-S-Left> <ESC>:tabp<CR>
 
+nnoremap <M-p> :CtrlPBufTag<CR>
+
+" Easier Buffer Nav - Option + [ ]
+nmap <M-]> :bn<CR>
+nmap <M-[> :bp<CR>
+
+" quickly closer a Buffer
+nmap <silent> <C-x> :bw<CR>
+
+
+"" Buffer Navigation
+" Toggle left sidebar: NERDTree and BufferGator
+fu! UiToggle()
+  let b = bufnr("%")
+  execute "NERDTreeToggle"
+  execute ( bufwinnr(b) . "wincmd w" )
+  execute ":set number!"
+endf
+map  <silent> <Leader>w  <esc>:call UiToggle()<cr>
+
+
+
 " Delete trailing whitespace on puppet files
 autocmd BufWritePre * :%s/\s\+$//e
 
@@ -154,6 +183,8 @@ autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype sh setlocal ts=2 sts=2 sw=2
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype scss setlocal ts=2 sts=2 sw=2
+
+Plugin 'craigemery/vim-autotag'
 
 " Python
 " Ignore long lines
