@@ -15,7 +15,6 @@
 ############################################################################
 # Copy-paste integration
 set-option -g default-command "reattach-to-user-namespace -l zsh"
-
 # Use vim keybindings in copy mode
 setw -g mode-keys vi
 
@@ -41,7 +40,7 @@ bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux past
 # Global options
 ############################################################################
 set-option -g default-shell /bin/zsh
-
+set-option -g display-time 4000
 # large history
 set-option -g history-limit 10000
 
@@ -77,7 +76,7 @@ set -g terminal-overrides 'xterm*:smcup@:rmcup@'
 ############################################################################
 # Status Bar
 ############################################################################
-source /Users/bresmith/.vim/bundle/powerline/powerline/bindings/tmux/powerline.conf
+source /usr/local/Cellar/powerline/2.3/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf
 
 
 
@@ -101,8 +100,8 @@ bind-key e run-shell "vi ~/.tmux.conf"
 #bind Escape copy-mode
 
 # new split in current pane (horizontal / vertical)
-bind-key - split-window -v # split pane horizontally
-bind-key \ split-window -h # split pane vertically
+bind-key - split-window -v -c "#{pane_current_path}" # split pane horizontally
+bind-key \ split-window -h  -c "#{pane_current_path}" # split pane vertically
 
 # list panes
 bind-key Space list-panes
@@ -132,7 +131,8 @@ bind-key -n C-down next
 # windows
 ############################################################################
 set-window-option -g window-status-current-bg red
-bind A command-prompt "rename-window %%"
+bind-key n      command-prompt 'rename-window %%'
+bind-key N      command-prompt 'rename-session %%'
 # By default, all windows in a session are constrained to the size of the
 # smallest client connected to that session,
 # even if both clients are looking at different windows.
@@ -155,7 +155,8 @@ bind -n M-down run "(tmux display-message -p '#{pane_current_command}' | grep -i
 bind -n M-up run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
 bind -n M-right run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
 bind -n M-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
-bind -n M-x confirm-before -p "kill-pane #P? (y/n)" kill-pane
+bind -n M-w confirm-before -p "kill-pane #P? (y/n)" kill-pane
+bind -n M-x confirm-before -p "kill-window #W? (y/n)" kill-window
 
 
 # quick pane resizing with vim awareness
@@ -167,6 +168,11 @@ bind-key -n M-S-right run "(tmux display-message -p '#{pane_current_command}' | 
 bind-key -n C-left run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':tabp' Enter) || tmux prev"
 bind-key -n C-right run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys ':tabn' Enter) || tmux next"
 
+
+bind-key -n M-C-left resize-pane -L 20
+bind-key -n M-C-up resize-pane -U 20
+bind-key -n M-C-right resize-pane -R 20
+bind-key -n M-C-down resize-pane -D 20
 
 # use vim motion keys while in copy mode
 setw -g mode-keys vi
@@ -185,12 +191,12 @@ bind M-r rotate-window
 
 #############################################################################
 # PLUGINS
-#############################################################################
-set -g @tpm_plugins '		\
-   tmux-plugins/tpm		\
-   tmux-plugins/tmux-sensible  	\
-   tmux-plugins/tmux-yank       \
-   tmux-plugins/tmux-open       \
-'
-   # initialize TMUX plugin manager
-   run-shell '~/.tmux/plugins/tpm/tpm'
+##############################################################################
+#set -g @tpm_plugins '		\
+#   tmux-plugins/tpm		\
+#   tmux-plugins/tmux-sensible  	\
+#   tmux-plugins/tmux-yank       \
+#   tmux-plugins/tmux-open       \
+#'
+#   # initialize TMUX plugin manager
+#   run-shell '~/.tmux/plugins/tpm/tpm'
